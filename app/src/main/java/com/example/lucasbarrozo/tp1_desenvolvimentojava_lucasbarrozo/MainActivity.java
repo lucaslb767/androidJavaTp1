@@ -2,6 +2,7 @@ package com.example.lucasbarrozo.tp1_desenvolvimentojava_lucasbarrozo;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -33,6 +34,19 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mEdt
+        mEdtNome = findViewById(R.id.edtNome);
+        mEdtTelefone = findViewById(R.id.edtTelefone);
+        mEdtEmail = findViewById(R.id.edtEmail);
+        mEdtCidade = findViewById(R.id.edtCidade);
+
+        mBtnSalvar = findViewById(R.id.btnSalvar);
+        mBtnSalvar.setOnClickListener(salvarContato);
     }
+
+    public View.OnClickListener salvarContato = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+
+        }
+    };
 }

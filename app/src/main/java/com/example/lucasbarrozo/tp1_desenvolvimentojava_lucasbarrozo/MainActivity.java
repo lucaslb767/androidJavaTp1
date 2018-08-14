@@ -8,10 +8,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -46,6 +48,9 @@ public class MainActivity extends AppCompatActivity {
 
         mBtnSalvar = findViewById(R.id.btnSalvar);
         mBtnSalvar.setOnClickListener(salvarContato);
+
+        mBtnLimpar = findViewById(R.id.btnLimpar);
+        mBtnLimpar.setOnClickListener(limparFormulario);
     }
 
     public View.OnClickListener salvarContato = new View.OnClickListener() {
@@ -142,5 +147,71 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    public void carregarContatos() {
 
+        StringBuilder nomes = new StringBuilder("");
+        StringBuilder telefones = new StringBuilder("");
+        StringBuilder emails = new StringBuilder("");
+        StringBuilder cidades = new StringBuilder("");
+
+
+
+        try {
+            FileInputStream fis = openFileInput(mTelefoneSalvo);
+            byte[] buffer = new byte[(int) fis.getChannel().size()];
+            fis.read(buffer);
+            for (byte b : buffer)
+                telefones.append((char) b);
+        } catch (FileNotFoundException e) {
+            Toast.makeText(this, "Não foi possível encontrar o contato!", Toast.LENGTH_SHORT).show();
+        } catch (IOException e) {
+            Toast.makeText(this, "Não foi possível ler o arquivo", Toast.LENGTH_SHORT).show();
+        }
+
+        try {
+            FileInputStream fis = openFileInput(mEmailSalvo);
+            byte[] buffer = new byte[(int) fis.getChannel().size()];
+            fis.read(buffer);
+            for (byte b : buffer)
+                emails.append((char) b);
+        } catch (FileNotFoundException e) {
+            Toast.makeText(this, "Não foi possível encontrar o contato!", Toast.LENGTH_SHORT).show();
+        } catch (IOException e) {
+            Toast.makeText(this, "Não foi possível ler o arquivo", Toast.LENGTH_SHORT).show();
+        }
+
+        try {
+            FileInputStream fis = openFileInput(mCidadeSalvo);
+            byte[] buffer = new byte[(int) fis.getChannel().size()];
+            fis.read(buffer);
+            for (byte b : buffer)
+                cidades.append((char) b);
+        } catch (FileNotFoundException e) {
+            Toast.makeText(this, "Não foi possível encontrar o contato!", Toast.LENGTH_SHORT).show();
+        } catch (IOException e) {
+            Toast.makeText(this, "Não foi possível ler o arquivo", Toast.LENGTH_SHORT).show();
+        }
+
+        String[] nomeLista = nomes.toString().split("-");
+        String[] telefonesLista = telefones.toString().split("-");
+        String[] emailsLista = emails.toString().split("-");
+        String[] cidadesLista = cidades.toString().split("-");
+
+        mListaNomes.addAll(Arrays.asList(nomeLista));
+        mListaTelefones.addAll(Arrays.asList(telefonesLista));
+        mListaEmails.addAll(Arrays.asList(emailsLista));
+        mListaCidades.addAll(Arrays.asList(cidadesLista));
+    }
+
+    private View.OnClickListener limparFormulario = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            mEdtNome.setText(null);
+            mEdtTelefone.setText(null);
+            mEdtEmail.setText(null);
+            mEdtCidade.setText(null);
+            mEdtNome.requestFocus();
+            Toast.makeText(getApplicationContext(), "Formulário limpo!", Toast.LENGTH_SHORT).show();
+        }
+    };
 }
